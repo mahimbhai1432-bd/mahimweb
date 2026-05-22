@@ -1,0 +1,181 @@
+<!-- FILE: index.html (Main Control Panel) - MODIFIED -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAHIM OFFCIAL - BOT CONTROL PANEL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* All CSS from the original file remains unchanged. */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+        :root { --primary: #9333ea; --primary-dark: #581c87; --primary-glow: rgba(147, 51, 234, 0.5); --primary-rgb: 147, 51, 234; }
+        body[data-theme="cyan"] { --primary: #22d3ee; --primary-dark: #0e7490; --primary-glow: rgba(34, 211, 238, 0.5); --primary-rgb: 34, 211, 238; }
+        body[data-theme="red"] { --primary: #f43f5e; --primary-dark: #9f1239; --primary-glow: rgba(244, 63, 94, 0.5); --primary-rgb: 244, 63, 94; }
+        body[data-theme="gold"] { --primary: #facc15; --primary-dark: #b45309; --primary-glow: rgba(250, 204, 21, 0.5); --primary-rgb: 250, 204, 21; }
+        body[data-theme="green"] { --primary: #4ade80; --primary-dark: #15803d; --primary-glow: rgba(74, 222, 128, 0.5); --primary-rgb: 74, 222, 128; }
+        body[data-theme="blue"] { --primary: #3b82f6; --primary-dark: #1e40af; --primary-glow: rgba(59, 130, 246, 0.5); --primary-rgb: 59, 130, 246; }
+        body { background: radial-gradient(ellipse at center, rgba(var(--primary-rgb), 0.08), #040108 70%), #040108; color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; -webkit-user-select: none; user-select: none; transition: background 0.5s ease; }
+        body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(var(--primary-rgb), 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); z-index: 9999; background-size: 100% 3px, 3px 100%; pointer-events: none; }
+        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); } ::-webkit-scrollbar-thumb { background-color: var(--primary); border-radius: 6px; } ::-webkit-scrollbar-thumb:hover { background-color: var(--primary-dark); }
+        input, select, textarea, pre, code { -webkit-user-select: text !important; user-select: text !important; cursor: text; }
+        textarea { resize: vertical; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .text-gradient-main { background: linear-gradient(90deg, var(--primary), #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass-card { background: rgba(15, 5, 25, 0.85); border: 1px solid var(--primary); border-radius: 28px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.8); backdrop-filter: blur(12px); transition: border-color 0.5s ease, transform 0.3s ease; animation: fadeIn 0.8s ease-out forwards; }
+        .input-box { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .input-box:focus-within { border-color: var(--primary); background: rgba(var(--primary-rgb), 0.08); box-shadow: 0 0 15px var(--primary-glow); }
+        .btn-main, .btn-danger { transition: 0.3s; opacity: 1; } .btn-main:hover, .btn-danger:hover { transform: translateY(-2px); } .btn-main:active, .btn-danger:active { transform: scale(0.96); } .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); } .btn-main:hover { box-shadow: 0 8px 25px var(--primary-glow); } .btn-danger { background: linear-gradient(135deg, #ef4444, #991b1b); } .btn-danger:hover { box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4); } button:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        #toast { position: fixed; top: 25px; left: 50%; transform: translateX(-50%); padding: 14px 45px; border-radius: 16px; font-weight: bold; display: none; z-index: 10000; animation: slideDown 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
+        #success-banner { transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; will-change: opacity, transform; }
+        .theme-swatch { width: 24px; height: 24px; border-radius: 9999px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease-in-out; } .theme-swatch:hover { transform: scale(1.2); } .theme-swatch.active { border-color: #fff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
+        @keyframes slideDown { from { opacity: 0; transform: translate(-50%, -30px); } to { opacity: 1; transform: translate(-50%, 0); } } @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .glitch { position: relative; } .glitch:before, .glitch:after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #040108; overflow: hidden; } .glitch:before { left: 2px; text-shadow: -1px 0 red; animation: glitch-anim-1 2s infinite linear alternate-reverse; } .glitch:after { left: -2px; text-shadow: -1px 0 blue; animation: glitch-anim-2 2s infinite linear alternate-reverse; }
+        @keyframes glitch-anim-1 { 0% { clip-path: inset(15% 0 86% 0); } 25% { clip-path: inset(5% 0 40% 0); } 50% { clip-path: inset(42% 0 55% 0); } 75% { clip-path: inset(70% 0 10% 0); } 100% { clip-path: inset(90% 0 5% 0); } } @keyframes glitch-anim-2 { 0% { clip-path: inset(79% 0 10% 0); } 25% { clip-path: inset(20% 0 15% 0); } 50% { clip-path: inset(45% 0 30% 0); } 75% { clip-path: inset(10% 0 80% 0); } 100% { clip-path: inset(0 0 95% 0); } }
+    </style>
+</head>
+<body class="flex flex-col items-center p-4 min-h-screen">
+
+    <!-- The header/navigation bar has been removed as requested -->
+
+    <main id="main-content" class="w-full max-w-md space-y-6 mt-8">
+        <div class="text-center">
+            <h1 class="text-5xl font-bold orbitron tracking-tighter glitch" data-text="MAHIM OFFCIAL" style="text-shadow: 0 0 20px var(--primary-glow)"><span class="text-gradient-main">MAHIM</span> <span class="text-white">OFFCIAL</span></h1>
+            <p class="text-[10px] text-gray-400 uppercase tracking-[7px] mt-2 font-bold">Bot Control Panel</p>
+        </div>
+        
+        <div id="success-banner" class="glass-card p-5 flex items-start gap-4 border-green-500" style="border-width: 2px; display: none; opacity: 0; transform: translateY(-20px);"><i class="fas fa-check-circle text-green-400 text-4xl mt-1"></i><div><h3 id="success-banner-title" class="text-lg font-bold orbitron text-white">Action Successful</h3><p id="success-banner-message" class="text-sm text-gray-200 mt-1"></p><p id="success-banner-details" class="text-[10px] text-gray-400 mt-2 font-mono"></p></div></div>
+
+        <!-- Credentials & Systems -->
+        <div class="glass-card p-6 space-y-4">
+            <div class="flex items-center justify-between border-b pb-4" style="border-color: var(--primary);"><h2 class="text-[10px] font-bold orbitron uppercase tracking-widest" style="color: var(--primary);">System Credentials</h2><div class="flex items-center gap-4"><div class="flex items-center gap-2" title="Website Total Visits"><i class="fas fa-chart-simple" style="color: var(--primary);"></i><span id="visit-counter" class="text-[9px] font-bold orbitron" style="color: var(--primary);">...</span></div><div class="flex items-center gap-2" title="API Status"><span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow);"></span><span class="text-[9px] font-bold uppercase tracking-tighter" style="color: var(--primary);">Online</span></div></div></div>
+            <div class="input-box p-4 flex items-center"><i class="fas fa-user-circle mr-4 text-base" style="color: var(--primary);"></i><input type="text" id="common_uid" placeholder="ENTER YOUR UID" class="bg-transparent w-full outline-none text-sm tracking-widest"></div>
+            <div class="input-box p-4 flex items-center"><i class="fas fa-key mr-4 text-base" style="color: var(--primary);"></i><input type="password" id="common_password" placeholder="ENTER YOUR PASSWORD" class="bg-transparent w-full outline-none text-sm tracking-widest"></div>
+        </div>
+
+        <!-- REORGANIZED: Community Management -->
+        <div class="glass-card p-6 space-y-6">
+            <!-- Friend Management Section -->
+            <div class="space-y-4">
+                <h3 class="text-center text-sm font-bold orbitron uppercase tracking-widest" style="color: var(--primary);">Friend Management</h3>
+                <div class="input-box p-4 flex items-center">
+                    <i class="fas fa-user-friends mr-4 text-base" style="color: var(--primary);"></i>
+                    <input type="text" id="friend_uid" placeholder="ENTER TARGET UID" class="bg-transparent w-full outline-none text-sm tracking-widest">
+                </div>
+                <div class="pt-2 flex gap-4">
+                    <button onclick="executeAddFriend(this)" class="api-button btn-main w-full py-3 rounded-xl font-bold uppercase text-[10px] tracking-[2px]"><i class="fas fa-user-plus mr-2"></i> Add Friend</button>
+                    <button onclick="executeRemoveFriend(this)" class="api-button btn-danger w-full py-3 rounded-xl font-bold uppercase text-[10px] tracking-[2px]"><i class="fas fa-user-minus mr-2"></i> Remove Friend</button>
+                </div>
+            </div>
+
+            <!-- Visual Separator -->
+            <div class="border-t" style="border-color: rgba(var(--primary-rgb), 0.2);"></div>
+
+            <!-- Guild Management Section -->
+            <div class="space-y-4">
+                <h3 class="text-center text-sm font-bold orbitron uppercase tracking-widest" style="color: var(--primary);">Guild Management</h3>
+                <div class="input-box p-4 flex items-center">
+                    <i class="fas fa-users mr-4 text-base" style="color: var(--primary);"></i>
+                    <input type="text" id="guild_id" placeholder="ENTER GUILD ID" class="bg-transparent w-full outline-none text-sm tracking-widest">
+                </div>
+                <div class="pt-2 flex gap-4">
+                     <button onclick="executeJoinGuild(this)" class="api-button btn-main w-full py-3 rounded-xl font-bold uppercase text-[10px] tracking-[2px]"><i class="fas fa-door-open mr-2"></i> Join Guild</button>
+                     <button onclick="executeLeaveGuild(this)" class="api-button btn-danger w-full py-3 rounded-xl font-bold uppercase text-[10px] tracking-[2px]"><i class="fas fa-sign-out-alt mr-2"></i> Leave Guild</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- REORGANIZED: Profile Management -->
+        <div class="glass-card p-6 space-y-6">
+            <!-- Change Nickname Section -->
+            <div class="space-y-4">
+                <h3 class="text-center text-sm font-bold orbitron uppercase tracking-widest" style="color: var(--primary);">Change Nickname</h3>
+                <div class="input-box p-4 flex items-center"><i class="fas fa-tag mr-4 text-base" style="color: var(--primary);"></i><input type="text" id="nickname" placeholder="ENTER NEW NICKNAME" class="bg-transparent w-full outline-none text-sm tracking-widest"></div>
+                <button onclick="executeChangeName(this)" class="api-button btn-main w-full py-3 rounded-xl font-bold uppercase text-[10px] tracking-[2px]"><i class="fas fa-pen-nib mr-2"></i> Change Name</button>
+            </div>
+            
+            <!-- Visual Separator -->
+            <div class="border-t" style="border-color: rgba(var(--primary-rgb), 0.2);"></div>
+
+            <!-- Update Bio Section -->
+            <div class="space-y-4">
+                <h3 class="text-center text-sm font-bold orbitron uppercase tracking-widest" style="color: var(--primary);">Update Bio</h3>
+                <div class="input-box p-4"><textarea id="bio_text" placeholder="Enter new bio here..." rows="4" class="bg-transparent w-full outline-none text-sm tracking-wider"></textarea></div>
+                <button onclick="executeUpdateBio(this)" class="api-button btn-main w-full py-3 rounded-xl font-bold uppercase text-[10px] tracking-[2px]"><i class="fas fa-pencil-alt mr-2"></i> Update Bio</button>
+            </div>
+            
+            <!-- Visual Separator -->
+            <div class="border-t" style="border-color: rgba(var(--primary-rgb), 0.2);"></div>
+            
+            <!-- Emote Management Section -->
+            <div class="space-y-4">
+                <h3 class="text-center text-sm font-bold orbitron uppercase tracking-widest" style="color: var(--primary);">Equip Special Emote</h3>
+                <div class="pt-2">
+                     <button onclick="executeEquipEmote(this)" class="api-button btn-main w-full py-3 rounded-xl font-bold uppercase text-[10px] tracking-[2px]">
+                        <i class="fas fa-smile mr-2"></i> Equip Emote
+                     </button>
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="w-full max-w-md space-y-6">
+            <div class="glass-card p-6"><h2 class="text-[10px] font-bold orbitron uppercase tracking-widest text-center" style="color: var(--primary);">SELECT THEME</h2><div class="flex justify-center items-center gap-4 mt-4"><button id="theme-purple" class="theme-swatch" style="background: #9333ea;" onclick="changeTheme('purple')"></button><button id="theme-cyan" class="theme-swatch" style="background: #22d3ee;" onclick="changeTheme('cyan')"></button><button id="theme-red" class="theme-swatch" style="background: #f43f5e;" onclick="changeTheme('red')"></button><button id="theme-gold" class="theme-swatch" style="background: #facc15;" onclick="changeTheme('gold')"></button><button id="theme-green" class="theme-swatch" style="background: #4ade80;" onclick="changeTheme('green')"></button><button id="theme-blue" class="theme-swatch" style="background: #3b82f6;" onclick="changeTheme('blue')"></button></div></div>
+            
+            <div class="glass-card p-6">
+                <h2 class="text-[10px] font-bold orbitron uppercase tracking-widest text-center" style="color: var(--primary);">
+                    CONNECT WITH DEVELOPER
+                </h2>
+                <div class="flex justify-center items-center gap-6 mt-4">
+                    <a href="https://www.tiktok.com/@mahim_offcial_143" target="_blank" rel="noopener noreferrer" title="TikTok" class="text-2xl text-gray-400 hover:text-white transition-all duration-300 hover:transform hover:scale-125">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://www.instagram.com/mahim_offcial_143" target="_blank" rel="noopener noreferrer" title="Instagram" class="text-2xl text-gray-400 hover:text-white transition-all duration-300 hover:transform hover:scale-125">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@mahim_offcial_143" target="_blank" rel="noopener noreferrer" title="YouTube" class="text-2xl text-gray-400 hover:text-white transition-all duration-300 hover:transform hover:scale-125">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://t.me/mahim_offcial_143" target="_blank" rel="noopener noreferrer" title="Telegram" class="text-2xl text-gray-400 hover:text-white transition-all duration-300 hover:transform hover:scale-125">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center pb-8 space-y-2">
+                <p class="text-xs font-bold orbitron" style="color: var(--primary);">
+                    DEVELOPER : @mahim_offcial_143
+                </p>
+                <p class="text-[9px] uppercase tracking-[5px] font-bold" style="color: var(--primary-dark);">
+                    MAHIM Infrastructure • © 2024
+                </p>
+            </div>
+        </footer>
+    </main>
+    <div id="toast"></div>
+
+    <script>
+        // All Javascript from the original file remains unchanged.
+        const THEME_KEY = 'mahim_theme';
+        async function apiCall(url, timeout = 25000) { const controller = new AbortController(); const id = setTimeout(() => controller.abort(), timeout); console.log(`[API_CALL] Requesting URL: ${url}`); try { const response = await fetch(url, { signal: controller.signal }); clearTimeout(id); const responseText = await response.text(); console.log(`[API_DEBUG] Raw Response Text:`, responseText); let parsedData; try { parsedData = JSON.parse(responseText); } catch (e) { parsedData = responseText; } console.log(`[API_DEBUG] Parsed Data:`, parsedData); if (!response.ok) { const errorMessage = parsedData?.message || parsedData?.error || responseText || `Server returned an error: ${response.status}`; return { success: false, message: errorMessage }; } if (typeof parsedData === 'object' && parsedData !== null && (parsedData.status === 'error' || parsedData.status === 'failed' || parsedData.success === false)) { const errorMessage = parsedData.message || parsedData.error || "Operation failed according to API response."; return { success: false, message: errorMessage }; } return { success: true, data: parsedData }; } catch (error) { clearTimeout(id); console.error("[API_CALL] Fetch Error:", error); if (error.name === 'AbortError') { return { success: false, message: 'Request Timed Out. Please try again.' }; } return { success: false, message: 'Network Error. Could not connect to the API.' }; } }
+        function getCommonCredentials() { const uid = document.getElementById('common_uid').value.trim(); const password = document.getElementById('common_password').value.trim(); if (!uid || !password) { showNotify("UID and Password cannot be empty.", "error"); return null; } return { uid, password }; }
+        async function handleApiRequest(buttonElement, url, successOptions) { const originalButtonHTML = buttonElement.innerHTML; buttonElement.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Processing`; disableApiButtons(); await apiCall(url); showSuccessBanner({ title: successOptions.title, message: successOptions.message, details: successOptions.details }); buttonElement.innerHTML = originalButtonHTML; enableApiButtons(); }
+        function executeAddFriend(buttonElement) { const creds = getCommonCredentials(); if (!creds) return; const friendUid = document.getElementById('friend_uid').value.trim(); if (!friendUid) { showNotify("Target UID cannot be empty.", "error"); return; } const url = `https://mahim-offcial-bot-website.vercel.app/adding_friend?uid=${creds.uid}&password=${creds.password}&friend_uid=${friendUid}`; handleApiRequest(buttonElement, url, { title: "Request Sent", message: "Add friend request has been processed successfully.", details: `Target UID: ${friendUid}` }); }
+        function executeRemoveFriend(buttonElement) { const creds = getCommonCredentials(); if (!creds) return; const friendUid = document.getElementById('friend_uid').value.trim(); if (!friendUid) { showNotify("Target UID cannot be empty.", "error"); return; } const url = `https://mahim-offcial-bot-website.vercel.app/remove_friend?uid=${creds.uid}&password=${creds.password}&friend_uid=${friendUid}`; handleApiRequest(buttonElement, url, { title: "Request Sent", message: "Remove friend request has been processed successfully.", details: `Target UID: ${friendUid}` }); }
+        function executeLeaveGuild(buttonElement) { const creds = getCommonCredentials(); if (!creds) return; const guildId = document.getElementById('guild_id').value.trim(); if (!guildId) { showNotify("Guild ID cannot be empty.", "error"); return; } const url = `https://mahim-gulid-join-api.vercel.app/leave?guild_id=${guildId}&uid=${creds.uid}&password=${creds.password}`; handleApiRequest(buttonElement, url, { title: "Request Sent", message: "Leave guild request has been processed successfully.", details: `Guild ID: ${guildId}` }); }
+        function executeUpdateBio(buttonElement) { const creds = getCommonCredentials(); if (!creds) return; const bio = document.getElementById('bio_text').value.trim(); if (!bio) { showNotify("Bio content cannot be empty.", "error"); return; } const url = `https://mahim-long-bio-api.vercel.app/update_bio?uid=${creds.uid}&password=${creds.password}&bio=${encodeURIComponent(bio)}`; handleApiRequest(buttonElement, url, { title: "Bio Update Processed", message: "Your request to update the bio has been sent successfully.", details: `For UID: ${creds.uid}` }); }
+        function executeJoinGuild(buttonElement) { const creds = getCommonCredentials(); if (!creds) return; const guildId = document.getElementById('guild_id').value.trim(); if (!guildId) { showNotify("Guild ID cannot be empty.", "error"); return; } const url = `https://mahim-gulid-join-api.vercel.app/join?guild_id=${guildId}&uid=${creds.uid}&password=${creds.password}`; handleApiRequest(buttonElement, url, { title: "Join Request Processed", message: "Your request to join the guild has been sent successfully.", details: `Guild ID: ${guildId}` }); }
+        function executeChangeName(buttonElement) { const creds = getCommonCredentials(); if (!creds) return; const nickname = document.getElementById('nickname').value.trim(); if (!nickname) { showNotify("Nickname cannot be empty.", "error"); return; } const url = `https://mahim-namechange-api-1.vercel.app/change-name?uid=${creds.uid}&password=${creds.password}&nickname=${encodeURIComponent(nickname)}`; handleApiRequest(buttonElement, url, { title: "Name Change Processed", message: "Your request to change the nickname has been sent successfully.", details: `New Name: ${nickname}` }); }
+        function executeEquipEmote(buttonElement) { const creds = getCommonCredentials(); if (!creds) return; const url = `https://emote-equip-mahim-offcial-143.vercel.app/mahim?emote_enquip&uid=${creds.uid}&password=${creds.password}`; handleApiRequest(buttonElement, url, { title: "Request Sent", message: "Your request to equip the emote has been processed successfully.", details: `For UID: ${creds.uid}` }); }
+        function disableApiButtons() { document.querySelectorAll('.api-button').forEach(btn => btn.disabled = true); }
+        function enableApiButtons() { document.querySelectorAll('.api-button').forEach(btn => btn.disabled = false); }
+        function showSuccessBanner({ title = "Action Successful", message, details = "" }) { const banner = document.getElementById('success-banner'); document.getElementById('success-banner-title').textContent = title; document.getElementById('success-banner-message').textContent = message; const detailsEl = document.getElementById('success-banner-details'); if (details) { detailsEl.textContent = details; detailsEl.style.display = 'block'; } else { detailsEl.style.display = 'none'; } banner.style.display = 'flex'; banner.offsetHeight; banner.style.opacity = 1; banner.style.transform = 'translateY(0)'; setTimeout(() => { banner.style.opacity = 0; banner.style.transform = 'translateY(-20px)'; setTimeout(() => { banner.style.display = 'none'; }, 500); }, 5000); }
+        function changeTheme(themeName) { document.body.dataset.theme = themeName; localStorage.setItem(THEME_KEY, themeName); document.querySelectorAll('.theme-swatch').forEach(swatch => swatch.classList.remove('active')); document.getElementById(`theme-${themeName}`).classList.add('active'); }
+        function updateVisitCount() { const counterElement = document.getElementById('visit-counter'); if(!counterElement) return; apiCall('https://api.countapi.xyz/hit/mahimoffcial-prosite-v5/visits').then(result => { if (result.success && result.data.value) { counterElement.textContent = result.data.value.toLocaleString(); } else { counterElement.textContent = 'N/A'; } }); }
+        function showNotify(message, type) { const t = document.getElementById('toast'); t.innerText = message; t.style.display = 'block'; t.style.background = type === 'success' ? `linear-gradient(135deg, var(--primary), var(--primary-dark))` : `linear-gradient(135deg, #ef4444, #991b1b)`; t.style.border = type === 'success' ? `1px solid var(--primary)` : '1px solid #b91c1c'; setTimeout(() => { t.style.display = 'none'; }, 5000); }
+        document.addEventListener('DOMContentLoaded', () => { const savedTheme = localStorage.getItem(THEME_KEY) || 'purple'; changeTheme(savedTheme); updateVisitCount(); });
+        document.oncontextmenu = (e) => { if (!['INPUT', 'SELECT', 'TEXTAREA', 'PRE', 'CODE'].includes(e.target.tagName) && !window.getSelection().toString()) { e.preventDefault(); } };
+    </script>
+</body>
+</html>
